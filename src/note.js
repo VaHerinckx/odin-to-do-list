@@ -1,7 +1,7 @@
 import {setAttributes, appendChildren, createElementClass} from './utils'
 
 
-const newNote = class Note {
+const Note = class Note {
   constructor(title, date, status, prio, project, notes) {
     Object.assign(this, {title, date, status, prio, project, notes});
   };
@@ -13,26 +13,40 @@ const newNote = class Note {
   }
 }
 
-// const generateNote = function ()
-
+const generateNote = function () {
+  return new Note(document.querySelector("#title").value,
+                  document.querySelector("#date").value,
+                  document.querySelector("#status").value,
+                  document.querySelector("#priority").value,
+                  "project",
+                  document.querySelector("#description").value);
+}
 
 const displayNote = function (note) {
   let noteContainer = createElementClass("div", "note-container", "")
-  let title = createElementClass("span", "note-title", note["title"]);
-  let date = createElementClass("span", "note-title", note["date"]);
-  let status = createElementClass("span", "note-title", note["status"]);
-  let prio = createElementClass("span", "note-title", note["prio"]);
-  let project = createElementClass("span", "note-title", note["project"]);
-  let notes = createElementClass("span", "note-title", note["prio"]);
-  appendChildren(noteContainer, [title, date, status, prio, project, notes]);
+  appendChildren(noteContainer, [createNoteSection("title", note["title"]),
+                                 createNoteSection("date", note["date"]),
+                                 createNoteSection("status", note["status"]),
+                                 createNoteSection("prio", note["prio"]),
+                                 createNoteSection("project", note["project"]),
+                                 createNoteSection("notes", note["notes"])])
+  return noteContainer;
 }
+
 
 const deleteNote = function (note) {
   note.parentElement.remove();
 }
 
+function createNoteSection (sectionName, text) {
+  var elementContainer = createElementClass("div", `${sectionName}-container`, "");
+  var contentTitle = createElementClass("span", `${sectionName}-header`, `${sectionName}`);
+  var contentValue = createElementClass("span", `${sectionName}-value`, text);
+  appendChildren(elementContainer, [contentTitle, contentValue]);
+  return elementContainer
+}
 
-
-export {newNote,
+export {Note,
+        generateNote,
         displayNote,
         deleteNote};
