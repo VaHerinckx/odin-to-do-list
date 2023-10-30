@@ -76,11 +76,22 @@ const editElementById = function (id, notes) {
   var newNotes = [];
   notes.forEach(note => {note["id"] === id ? newNotes.push(note.updateNote()) : newNotes.push(note)});
   return newNotes;
+}
 
+const adaptEditFormValues = function (id, notes) {
+  const condition = note => note["id"] === id;
+  var note = notes.filter(condition)[0];
+  console.log(note)
+  document.querySelector("#title-edit").value = note["title"];
+  document.querySelector("#date-edit").value = note["date"];
+  document.querySelector("#status-edit").value = note["status"];
+  document.querySelector("#priority-edit").value = note["prio"];
+  document.querySelector("#description-edit").value = note["notes"];
 }
 
 export {Note,
         generateNote,
         displayNotes,
         removeElementById,
-        editElementById};
+        editElementById,
+        adaptEditFormValues};

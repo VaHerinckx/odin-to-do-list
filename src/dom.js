@@ -1,4 +1,4 @@
-import {Note, generateNote, displayNotes, removeElementById, editElementById} from './note';
+import {Note, generateNote, displayNotes, removeElementById, editElementById, adaptEditFormValues} from './note';
 
 
 const handleCreateOperation = function (noteCount, notes) {
@@ -17,6 +17,9 @@ const handleCreateOperation = function (noteCount, notes) {
 };
 
 const handleEditOperation = function (id, notes) {
+  console.log("about to adapt the values in the form")
+  adaptEditFormValues(id, notes)
+  console.log("values adapted")
   document.addEventListener("click", (event) => {
   if (event.target.classList.contains("close-edit-note-dialog")) {
     event.preventDefault()
