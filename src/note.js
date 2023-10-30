@@ -2,40 +2,46 @@ import {setAttributes, appendChildren, createElementClass} from './utils'
 
 
 const Note = class Note {
-  constructor(title, date, status, prio, project, notes) {
-    Object.assign(this, {title, date, status, prio, project, notes});
+  constructor(title, date, status, prio, project, notes, id) {
+    Object.assign(this, {title, date, status, prio, project, notes, id});
   };
-  updateNote = function(property, newValue) {
-    this[property] = newValue;
+  updateNote = function() {
+    this["title"] = document.querySelector("#title-edit").value;
+    this["date"] = document.querySelector("#date-edit").value;
+    this["status"] = document.querySelector("#status-edit").value;
+    this["prio"] = document.querySelector("#priority-edit").value;
+    this["notes"] = document.querySelector("#description-edit").value;
+    return this;
   };
-  readNote = function(property) {
-    return this[property];
-  }
 }
 
-const generateNote = function () {
-  return new Note(document.querySelector("#title").value,
-                  document.querySelector("#date").value,
-                  document.querySelector("#status").value,
-                  document.querySelector("#priority").value,
+const generateNote = function (noteCount) {
+  return new Note(document.querySelector("#title-new").value,
+                  document.querySelector("#date-new").value,
+                  document.querySelector("#status-new").value,
+                  document.querySelector("#priority-new").value,
                   "project",
-                  document.querySelector("#description").value);
+                  document.querySelector("#description-new").value,
+                  `id-${noteCount}`);
 }
 
-const displayNote = function (note) {
+const displayNotes = function (notes) {
+  removeDisplayedNotes();
+  var notesContainer = document.querySelector(".notes-container");
+  notes.forEach(note => {notesContainer.appendChild(displayNote(note))});
+};
+
+function displayNote (note) {
   let noteContainer = createElementClass("div", "note-container", "")
+  noteContainer.setAttribute("data-id", note["id"]);
   appendChildren(noteContainer, [createNoteSection("title", note["title"]),
                                  createNoteSection("date", note["date"]),
                                  createNoteSection("status", note["status"]),
                                  createNoteSection("prio", note["prio"]),
                                  createNoteSection("project", note["project"]),
-                                 createNoteSection("notes", note["notes"])])
+                                 createNoteSection("notes", note["notes"]),
+                                 createNoteButtons()]);
   return noteContainer;
-}
-
-
-const deleteNote = function (note) {
-  note.parentElement.remove();
 }
 
 function createNoteSection (sectionName, text) {
@@ -46,7 +52,35 @@ function createNoteSection (sectionName, text) {
   return elementContainer
 }
 
+function createNoteButtons () {
+  var elementContainer = createElementClass("div", "button-container", "");
+  var editButton = createElementClass("button", "edit-button", "Edit");
+  var deleteButton = createElementClass("button", "delete-button", "Delete");
+  appendChildren(elementContainer, [editButton, deleteButton]);
+  return elementContainer
+}
+
+function removeDisplayedNotes () {
+  var notesContainer = document.querySelector(".notes-container");
+  while (notesContainer.firstChild) {
+      notesContainer.removeChild(notesContainer.firstChild);
+    };
+}
+
+const removeElementById = function (id, notes) {
+  const condition = note => note["id"] !== id;
+  return notes.filter(condition);
+}
+
+const editElementById = function (id, notes) {
+  var newNotes = [];
+  notes.forEach(note => {note["id"] === id ? newNotes.push(note.updateNote()) : newNotes.push(note)});
+  return newNotes;
+
+}
+
 export {Note,
         generateNote,
-        displayNote,
-        deleteNote};
+        displayNotes,
+        removeElementById,
+        editElementById};

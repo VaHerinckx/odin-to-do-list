@@ -1,30 +1,68 @@
 import './styles.css';
 import generateBaseInterface from './interface';
-import {Note, generateNote, displayNote, deleteNote} from './note';
-import generateForm from './form';
+import {Note, generateNote, displayNotes, removeElementById, editElementById} from './note';
+import {generateNewNoteForm, generateEditNoteForm} from './form';
 
+let noteCount = 0;
 let notes = [];
+let id = "";
 let content = document.querySelector(".content")
 generateBaseInterface();
+let newNoteDialog = generateNewNoteForm();
+let editNoteDialog = generateEditNoteForm();
+content.appendChild(newNoteDialog);
+content.appendChild(editNoteDialog);
 
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("new-item")) { // If user clicks on new note
-    var dialog = generateForm();
-    content.appendChild(dialog);
-    dialog.showModal();
+    var newNotedialog = document.querySelector(".newNoteDialog")
+    newNotedialog.showModal();
   }
-  if (event.target.classList.contains("close-dialog")) { // If user finishes update
+  if (event.target.classList.contains("close-new-note-dialog")) { // If user finishes update
     event.preventDefault()
-    console.log("button close clicked")
-    var dialog = document.querySelector(".noteDialog")
-    console.log(dialog)
-    var notesContainer = document.querySelector(".notes-container");
-    var note = generateNote();
-    dialog.close();
+    var newNotedialog = document.querySelector(".newNoteDialog")
+    noteCount +=1;
+    var note = generateNote(noteCount);
+    newNotedialog.close();
     notes.push(note);
-    notesContainer.appendChild(displayNote(note))
+    displayNotes(notes);
+  }
+  if (event.target.classList.contains("delete-button")) { // If user finishes update
+    var id = event.target.parentNode.parentNode.dataset.id;
+    notes = removeElementById(id, notes);
+    displayNotes(notes);
+  }
+  if (event.target.classList.contains("edit-button")) { // If user finishes update
+    var editNoteDialog = document.querySelector(".editNoteDialog");
+    var id = event.target.parentNode.parentNode.dataset.id;
+    editNoteDialog.showModal();
+    editElement(id, notes);
+    // if (event.target.classList.contains("close-edit-note-dialog")) {
+    //   event.preventDefault()
+    //   var editNoteDialog = document.querySelector(".editNoteDialog");
+    //   console.log(id)
+    //   console.log(notes)
+    //   notes = editElementById(id, notes);
+    //   console.log(notes)
+    //   editNoteDialog.close();
+    //   displayNotes(notes);
+    // }
+}
+});
+
+function editElement (id, notes) {
+  document.addEventListener("click", (event) => {
+  if (event.target.classList.contains("close-edit-note-dialog")) {
+    event.preventDefault()
+    var editNoteDialog = document.querySelector(".editNoteDialog");
+    console.log(notes)
+    notes = editElementById(id, notes)
+    console.log(notes)
+    editNoteDialog.close();
+    displayNotes(notes);
   }
 })
+}
 
 // JavaScript to open and close the dialog
 // const openButton = document.getElementById('openDialog');

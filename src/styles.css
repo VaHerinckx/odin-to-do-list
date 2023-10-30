@@ -22,12 +22,12 @@
   border: 1px solid black;
 }
 
-.note-container div span{
+.note-container div *{
   width: 50%;
   border: 1px solid black;
 }
 
-.note-container div span:first-child {
+.note-container div *:first-child {
   display: flex;
   justify-content: center;
   text-transform: capitalize;
