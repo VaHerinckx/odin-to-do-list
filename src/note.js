@@ -39,7 +39,7 @@ const displayNotes = function (notes) {
 function displayNote (note) {
   let noteContainer = createElementClass("div", "note-container", "")
   noteContainer.setAttribute("data-id", note["id"]);
-  appendChildren(noteContainer, [createNoteSection("project", note["project"]),
+  appendChildren(noteContainer, [createElementClass("span", `project-value`, note["project"]),
                                  createNoteSection("title", note["title"]),
                                  createNoteSection("date", note["date"]),
                                  createNoteSection("status", note["status"]),
