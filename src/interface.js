@@ -1,14 +1,14 @@
 import {setAttributes, appendChildren, createElementClass} from './utils'
 import {generateNewNoteForm, generateEditNoteForm, generateNewProjectForm} from './form';
 
-const generateBaseElements = function (projects) {
+const generateBaseElements = function () {
   var content = document.querySelector(".content")
   var newNoteDialog = generateNewNoteForm();
   var editNoteDialog = generateEditNoteForm();
   var newProjectDialog = generateNewProjectForm();
   generateBaseInterface();
   appendChildren(content, [newNoteDialog, editNoteDialog, newProjectDialog]);
-  gnProjectsElements(projects);
+  // gnProjectsElements(projects);
 }
 
 function generateBaseInterface () {

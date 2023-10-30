@@ -1,13 +1,14 @@
 import {setAttributes, appendChildren, createElementClass} from './utils'
 
 const Project = class Project {
-  constructor(title) {
-    Object.assign(this, {title});
+  constructor(title, id) {
+    Object.assign(this, {title, id});
   };
 }
 
-const generateProject = function () {
-  return new Project(document.querySelector("#new-project").value);
+const generateProject = function (projectCount) {
+  return new Project(document.querySelector("#new-project").value,
+                     `id-${projectCount}`);
 }
 
 const generateProjectsList = function (projects) {
@@ -24,6 +25,7 @@ const displayProjects= function (projects) {
 
 function createProjectSection(project) {
   var projectContainer = createElementClass("div", "project-container", "");
+  projectContainer.setAttribute("data-id", project["id"]);
   var projectTitle = createElementClass("span", "project-title", project.title);
   var deleteProjectButton = createElementClass("button", "delete-project-button", "Delete project")
   appendChildren(projectContainer, [projectTitle, deleteProjectButton]);
