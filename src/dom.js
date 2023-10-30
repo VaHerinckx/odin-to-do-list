@@ -16,9 +16,9 @@ const handleCreateOperation = function (noteCount, notes) {
   });
 };
 
-const handleEditOperation = function (id, notes) {
+const handleEditOperation = function (id, notes, projects) {
   console.log("about to adapt the values in the form")
-  adaptEditFormValues(id, notes)
+  adaptEditFormValues(id, notes, projects)
   console.log("values adapted")
   document.addEventListener("click", (event) => {
   if (event.target.classList.contains("close-edit-note-dialog")) {

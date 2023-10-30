@@ -158,7 +158,7 @@ function createOptionElement(value) {
 
 // Input the values of original note when edit is selected
 
-const adaptEditFormValues = function (id, notes) {
+const adaptEditFormValues = function (id, notes, projects) {
   const condition = note => note["id"] === id;
   var note = notes.filter(condition)[0];
   console.log(note)
@@ -167,6 +167,7 @@ const adaptEditFormValues = function (id, notes) {
   document.querySelector("#status-edit").value = note["status"];
   document.querySelector("#priority-edit").value = note["prio"];
   document.querySelector("#description-edit").value = note["notes"];
+  adaptProjectOptions("#project-edit", projects);
   document.querySelector("#project-edit").value = note["project"];
 }
 
@@ -178,11 +179,11 @@ const resetNewFormValues = function (projects) {
   document.querySelector("#status-new").value = "";
   document.querySelector("#priority-new").value = "";
   document.querySelector("#description-new").value = "";
-  adaptProjectOptions(projects)
+  adaptProjectOptions("#project-new", projects)
 }
 
-function adaptProjectOptions (projects) {
-  let projectOptionsContainer = document.querySelector("#project-new");
+function adaptProjectOptions (projectContainerID, projects) {
+  let projectOptionsContainer = document.querySelector(projectContainerID);
   removeAllChildren(projectOptionsContainer);
   var projectList = [];
   projects.forEach(project => projectList.push(project.title));

@@ -59,6 +59,6 @@ document.addEventListener("click", (event) => {
     var editNoteDialog = document.querySelector(".editNoteDialog");
     id = event.target.parentNode.parentNode.dataset.id;
     editNoteDialog.showModal();
-    handleEditOperation(id, notes);
+    handleEditOperation(id, notes, projects);
   }
 })
