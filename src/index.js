@@ -10,7 +10,7 @@ let projectCount = 3;
 let notes = [];
 let projects = [new Project("General", "id-1"), new Project("Study", "id-2"), new Project("Chores", "id-3")];
 let content = document.querySelector(".content")
-generateBaseElements();
+generateBaseElements(projects);
 displayProjects(projects); //Generate all the base elements for the DOM
 
 document.addEventListener("click", (event) => {
@@ -30,22 +30,18 @@ document.addEventListener("click", (event) => {
   }
   if (event.target.classList.contains("delete-project-button")) { // User removes a project
     var id = event.target.parentNode.dataset.id;
-    console.log("delete clicked")
-    console.log(id)
     projects = removeElementById(id, projects);
     console.log(projects)
     displayProjects(projects);
   }
 
-
-
   //Notes logic
   if (event.target.classList.contains("new-item")) { // If user clicks on new note
     var newNotedialog = document.querySelector(".newNoteDialog")
-    resetNewFormValues();
+    resetNewFormValues(projects);
     newNotedialog.showModal();
   }
-  if (event.target.classList.contains("close-new-note-dialog")) { // If user finishes update
+  if (event.target.classList.contains("close-new-note-dialog")) { // If user finishes new note
     event.preventDefault()
     var newNotedialog = document.querySelector(".newNoteDialog")
     noteCount +=1;

@@ -22,8 +22,15 @@ const createElementClass = function(elementType, className, innerText) {
   return newElement;
 }
 
+const removeAllChildren = function (container) {
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  };
+}
+
 export {
   setAttributes,
   appendChildren,
-  createElementClass
+  createElementClass,
+  removeAllChildren
 };

@@ -1,9 +1,9 @@
-import {setAttributes, appendChildren, createElementClass} from './utils'
+import {setAttributes, appendChildren, createElementClass, removeAllChildren} from './utils'
 
 
 // Aggregate the form elements to create the two forms (new note and edit note)
 
-const generateNewNoteForm = function() {
+const generateNewNoteForm = function(projects) {
   var dialog = createElementClass("dialog", "newNoteDialog", "");
   var formContainer = createElementClass("form", "form-container", "");
   var formObjective = "new"
@@ -13,13 +13,13 @@ const generateNewNoteForm = function() {
                                  generateDescContainer(formObjective),
                                  generatePriorityContainer(formObjective),
                                  generateStatusContainer(formObjective),
-                                 generateProjectContainer(formObjective),
+                                 generateProjectContainer(formObjective, projects),
                                  generateCloseButton(formObjective)]);
   dialog.appendChild(formContainer);
   return dialog
 }
 
-const generateEditNoteForm = function() {
+const generateEditNoteForm = function(projects) {
   var dialog = createElementClass("dialog", "editNoteDialog", "");
   var formContainer = createElementClass("form", "form-container", "");
   var formObjective = "edit"
@@ -29,7 +29,7 @@ const generateEditNoteForm = function() {
                                  generateDescContainer(formObjective),
                                  generatePriorityContainer(formObjective),
                                  generateStatusContainer(formObjective),
-                                 generateProjectContainer(formObjective),
+                                 generateProjectContainer(formObjective, projects),
                                  generateCloseButton(formObjective)]);
   dialog.appendChild(formContainer);
   return dialog
@@ -106,11 +106,13 @@ function generateStatusContainer (formObjective) {
   return statusContainer;
 }
 
-function generateProjectContainer (formObjective) {
+function generateProjectContainer (formObjective, projects) {
   let projectContainer = createElementClass("div", "project-container", "");
   let projectLabel = createElementClass("label", "project", "Project: ");
   setAttributes(projectLabel, {"for" : "project"});
-  let projectInput = generateOptionElements("project", ["General", "Study"], formObjective, "General")
+  var projectList = [];
+  projects.forEach(project => projectList.push(project.title));
+  let projectInput = generateOptionElements("project", projectList, formObjective, "General")
   appendChildren(projectContainer, [projectLabel, projectInput]);
   return projectContainer;
 }
@@ -139,21 +141,17 @@ function generateNewProjectContainer () {
 
 
 // Functions to avoid redundant code
-function generateOptionElements (inputClass, optionValues, formObjective, defaultValue) {
+function generateOptionElements (inputClass, optionValues, formObjective) {
   var inputElement = createElementClass("select", inputClass, "");
-  setAttributes(inputElement, {"id" : `${inputClass}-${formObjective}`,
-                               "value": defaultValue});
-  optionValues.forEach((option) => inputElement.appendChild(createOptionElement(option, defaultValue)));
+  setAttributes(inputElement, {"id" : `${inputClass}-${formObjective}`});
+  optionValues.forEach((option) => inputElement.appendChild(createOptionElement(option)));
   return inputElement;
 }
 
-function createOptionElement(value, defaultValue) {
+function createOptionElement(value) {
   var option = document.createElement("option");
   option.setAttribute("value", value);
   option.innerText = value;
-  if (value === defaultValue) {
-    option.selected = true;
-  }
   return option;
 }
 
@@ -174,13 +172,21 @@ const adaptEditFormValues = function (id, notes) {
 
 // Reset the values when new note form is generated
 
-const resetNewFormValues = function () {
+const resetNewFormValues = function (projects) {
   document.querySelector("#title-new").value = "";
   document.querySelector("#date-new").value = "";
-  document.querySelector("#status-new").value = "Not started";
-  document.querySelector("#priority-new").value = "Very important";
+  document.querySelector("#status-new").value = "";
+  document.querySelector("#priority-new").value = "";
   document.querySelector("#description-new").value = "";
-  document.querySelector("#project-new").value = "None";
+  adaptProjectOptions(projects)
+}
+
+function adaptProjectOptions (projects) {
+  let projectOptionsContainer = document.querySelector("#project-new");
+  removeAllChildren(projectOptionsContainer);
+  var projectList = [];
+  projects.forEach(project => projectList.push(project.title));
+  projectList.forEach((project) => projectOptionsContainer.appendChild(createOptionElement(project)));
 }
 
 export {generateNewNoteForm, generateEditNoteForm, generateNewProjectForm, adaptEditFormValues, resetNewFormValues};
