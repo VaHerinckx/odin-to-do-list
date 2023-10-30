@@ -1,4 +1,4 @@
-import {Note, generateNote, displayNotes, removeElementById} from './note';
+import {Note, generateNote, displayNotes, removeElementById, editElementById} from './note';
 
 
 const handleCreateOperation = function (noteCount, notes) {
@@ -24,10 +24,9 @@ const handleEditOperation = function (id, notes) {
     notes = editElementById(id, notes)
     editNoteDialog.close();
     displayNotes(notes);
-    return notes;
   };
 });
-};
+}
 
 
 export {handleCreateOperation, handleEditOperation}
