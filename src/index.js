@@ -1,5 +1,5 @@
 import './styles.css';
-import generateBaseInterface from './interface';
+import generateBaseElements from './interface';
 import {Note, generateNote, displayNotes, removeElementById, editElementById} from './note';
 import {generateNewNoteForm, generateEditNoteForm} from './form';
 
@@ -7,11 +7,7 @@ let noteCount = 0;
 let notes = [];
 let id = "";
 let content = document.querySelector(".content")
-generateBaseInterface();
-let newNoteDialog = generateNewNoteForm();
-let editNoteDialog = generateEditNoteForm();
-content.appendChild(newNoteDialog);
-content.appendChild(editNoteDialog);
+generateBaseElements(); //Generate all the base elements for the DOM
 
 document.addEventListener("click", (event) => {
   if (event.target.classList.contains("new-item")) { // If user clicks on new note
