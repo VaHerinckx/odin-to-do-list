@@ -79,8 +79,20 @@ const editElementById = function (id, notes) {
 
 }
 
+const handleEditOperation = function (id, notes) {
+  document.addEventListener("click", (event) => {
+  if (event.target.classList.contains("close-edit-note-dialog")) {
+    event.preventDefault()
+    var editNoteDialog = document.querySelector(".editNoteDialog");
+    notes = editElementById(id, notes)
+    editNoteDialog.close();
+    displayNotes(notes);
+  };
+});
+}
+
 export {Note,
         generateNote,
         displayNotes,
         removeElementById,
-        editElementById};
+        handleEditOperation};

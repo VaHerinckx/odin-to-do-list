@@ -1,78 +1,31 @@
 import './styles.css';
-import generateBaseInterface from './interface';
-import {Note, generateNote, displayNotes, removeElementById, editElementById} from './note';
-import {generateNewNoteForm, generateEditNoteForm} from './form';
+import generateBaseElements from './interface';
+import {Note, generateNote, displayNotes, removeElementById} from './note';
+import {handleCreateOperation, handleEditOperation} from './dom';
 
 let noteCount = 0;
 let notes = [];
 let id = "";
 let content = document.querySelector(".content")
-generateBaseInterface();
-let newNoteDialog = generateNewNoteForm();
-let editNoteDialog = generateEditNoteForm();
-content.appendChild(newNoteDialog);
-content.appendChild(editNoteDialog);
+generateBaseElements(); //Generate all the base elements for the DOM
 
 document.addEventListener("click", (event) => {
-  if (event.target.classList.contains("new-item")) { // If user clicks on new note
+  if (event.target.classList.contains("new-item")) { // User adds a note
     var newNotedialog = document.querySelector(".newNoteDialog")
     newNotedialog.showModal();
+    noteCount += 1;
+    notes = handleCreateOperation(noteCount, notes)
+    console.log(notes)
   }
-  if (event.target.classList.contains("close-new-note-dialog")) { // If user finishes update
-    event.preventDefault()
-    var newNotedialog = document.querySelector(".newNoteDialog")
-    noteCount +=1;
-    var note = generateNote(noteCount);
-    newNotedialog.close();
-    notes.push(note);
-    displayNotes(notes);
-  }
-  if (event.target.classList.contains("delete-button")) { // If user finishes update
+  if (event.target.classList.contains("delete-button")) { // User removes a note
     var id = event.target.parentNode.parentNode.dataset.id;
     notes = removeElementById(id, notes);
     displayNotes(notes);
   }
-  if (event.target.classList.contains("edit-button")) { // If user finishes update
+  if (event.target.classList.contains("edit-button")) { // User updates a note
     var editNoteDialog = document.querySelector(".editNoteDialog");
-    var id = event.target.parentNode.parentNode.dataset.id;
+    id = event.target.parentNode.parentNode.dataset.id;
     editNoteDialog.showModal();
-    editElement(id, notes);
-    // if (event.target.classList.contains("close-edit-note-dialog")) {
-    //   event.preventDefault()
-    //   var editNoteDialog = document.querySelector(".editNoteDialog");
-    //   console.log(id)
-    //   console.log(notes)
-    //   notes = editElementById(id, notes);
-    //   console.log(notes)
-    //   editNoteDialog.close();
-    //   displayNotes(notes);
-    // }
-}
-});
-
-function editElement (id, notes) {
-  document.addEventListener("click", (event) => {
-  if (event.target.classList.contains("close-edit-note-dialog")) {
-    event.preventDefault()
-    var editNoteDialog = document.querySelector(".editNoteDialog");
-    console.log(notes)
-    notes = editElementById(id, notes)
-    console.log(notes)
-    editNoteDialog.close();
-    displayNotes(notes);
+    handleEditOperation(id, notes);
   }
 })
-}
-
-// JavaScript to open and close the dialog
-// const openButton = document.getElementById('openDialog');
-// const closeButton = document.getElementById('closeDialog');
-// const dialog = document.getElementById('dialog');
-
-// openButton.addEventListener('click', () => {
-//     dialog.showModal();
-// });
-
-// closeButton.addEventListener('click', () => {
-//     dialog.style.display = 'none';
-// });
