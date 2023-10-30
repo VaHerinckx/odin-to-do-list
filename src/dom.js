@@ -1,5 +1,5 @@
-import {Note, generateNote, displayNotes, removeElementById, editElementById, adaptEditFormValues} from './note';
-
+import {Note, generateNote, displayNotes, removeElementById, editElementById, } from './note';
+import { adaptEditFormValues } from './form';
 
 const handleCreateOperation = function (noteCount, notes) {
   document.querySelector(".newNoteDialog").addEventListener("click", (event) => {

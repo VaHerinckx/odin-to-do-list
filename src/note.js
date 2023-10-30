@@ -1,6 +1,7 @@
 import {setAttributes, appendChildren, createElementClass} from './utils'
 
 
+//Class generator
 const Note = class Note {
   constructor(title, date, status, prio, project, notes, id) {
     Object.assign(this, {title, date, status, prio, project, notes, id});
@@ -11,39 +12,44 @@ const Note = class Note {
     this["status"] = document.querySelector("#status-edit").value;
     this["prio"] = document.querySelector("#priority-edit").value;
     this["notes"] = document.querySelector("#description-edit").value;
+    this["project"] = document.querySelector("#project-edit").value;
     return this;
   };
 }
 
+//Create a new note object based on values given in the new note form
 const generateNote = function (noteCount) {
   return new Note(document.querySelector("#title-new").value,
                   document.querySelector("#date-new").value,
                   document.querySelector("#status-new").value,
                   document.querySelector("#priority-new").value,
-                  "project",
+                  document.querySelector("#project-new").value,
                   document.querySelector("#description-new").value,
                   `id-${noteCount}`);
 }
 
+//Displays all the notes objects in the DOM
 const displayNotes = function (notes) {
   removeDisplayedNotes();
   var notesContainer = document.querySelector(".notes-container");
   notes.forEach(note => {notesContainer.appendChild(displayNote(note))});
 };
 
+//Individually create the container with all the DOM elements for a note object
 function displayNote (note) {
   let noteContainer = createElementClass("div", "note-container", "")
   noteContainer.setAttribute("data-id", note["id"]);
-  appendChildren(noteContainer, [createNoteSection("title", note["title"]),
+  appendChildren(noteContainer, [createNoteSection("project", note["project"]),
+                                 createNoteSection("title", note["title"]),
                                  createNoteSection("date", note["date"]),
                                  createNoteSection("status", note["status"]),
                                  createNoteSection("prio", note["prio"]),
-                                 createNoteSection("project", note["project"]),
                                  createNoteSection("notes", note["notes"]),
                                  createNoteButtons()]);
   return noteContainer;
 }
 
+//Creates one text section of the DOM of the note
 function createNoteSection (sectionName, text) {
   var elementContainer = createElementClass("div", `${sectionName}-container`, "");
   var contentTitle = createElementClass("span", `${sectionName}-header`, `${sectionName}`);
@@ -52,6 +58,7 @@ function createNoteSection (sectionName, text) {
   return elementContainer
 }
 
+//Creates the buttons for the DOM of the note
 function createNoteButtons () {
   var elementContainer = createElementClass("div", "button-container", "");
   var editButton = createElementClass("button", "edit-button", "Edit");
@@ -60,6 +67,7 @@ function createNoteButtons () {
   return elementContainer
 }
 
+//Removes all the notes currently displayed in the DOM
 function removeDisplayedNotes () {
   var notesContainer = document.querySelector(".notes-container");
   while (notesContainer.firstChild) {
@@ -67,31 +75,22 @@ function removeDisplayedNotes () {
     };
 }
 
+//Removes the deleted note object from the array
 const removeElementById = function (id, notes) {
   const condition = note => note["id"] !== id;
   return notes.filter(condition);
 }
 
+//Updates the values of the edited note object and returns the updated array
 const editElementById = function (id, notes) {
   var newNotes = [];
   notes.forEach(note => {note["id"] === id ? newNotes.push(note.updateNote()) : newNotes.push(note)});
   return newNotes;
 }
 
-const adaptEditFormValues = function (id, notes) {
-  const condition = note => note["id"] === id;
-  var note = notes.filter(condition)[0];
-  console.log(note)
-  document.querySelector("#title-edit").value = note["title"];
-  document.querySelector("#date-edit").value = note["date"];
-  document.querySelector("#status-edit").value = note["status"];
-  document.querySelector("#priority-edit").value = note["prio"];
-  document.querySelector("#description-edit").value = note["notes"];
-}
 
 export {Note,
         generateNote,
         displayNotes,
         removeElementById,
-        editElementById,
-        adaptEditFormValues};
+        editElementById};

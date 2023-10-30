@@ -2,16 +2,34 @@ import './styles.css';
 import generateBaseElements from './interface';
 import {Note, generateNote, displayNotes, removeElementById} from './note';
 import {handleCreateOperation, handleEditOperation} from './dom';
+import { resetNewFormValues } from './form';
+import { Project, generateProject, generateProjectsList, displayProjects } from './project';
 
 let noteCount = 0;
 let notes = [];
-let id = "";
+let projects = [new Project("General"), new Project("Study"), new Project("Chores")];
 let content = document.querySelector(".content")
-generateBaseElements(); //Generate all the base elements for the DOM
+generateBaseElements(generateProjectsList(projects)); //Generate all the base elements for the DOM
 
 document.addEventListener("click", (event) => {
+  if (event.target.classList.contains("new-project")) { // If user clicks on new note
+    var newProjectdialog = document.querySelector(".newProjectDialog")
+    newProjectdialog.showModal();
+  }
+  if (event.target.classList.contains("close-new-project-dialog")) { // If user finishes update
+    event.preventDefault()
+    var newProjectdialog = document.querySelector(".newProjectDialog")
+    var project = generateProject();
+    newProjectdialog.close();
+    console.log(projects)
+    projects.push(project);
+    console.log(projects)
+    displayProjects(projects);
+  }
+
   if (event.target.classList.contains("new-item")) { // If user clicks on new note
     var newNotedialog = document.querySelector(".newNoteDialog")
+    resetNewFormValues();
     newNotedialog.showModal();
   }
   if (event.target.classList.contains("close-new-note-dialog")) { // If user finishes update

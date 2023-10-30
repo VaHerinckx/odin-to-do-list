@@ -1,43 +1,72 @@
 import {setAttributes, appendChildren, createElementClass} from './utils'
-import {generateNewNoteForm, generateEditNoteForm} from './form';
+import {generateNewNoteForm, generateEditNoteForm, generateNewProjectForm} from './form';
 
-const generateBaseElements = function () {
-  let content = document.querySelector(".content")
-  let newNoteDialog = generateNewNoteForm();
-  let editNoteDialog = generateEditNoteForm();
+const generateBaseElements = function (projects) {
+  var content = document.querySelector(".content")
+  var newNoteDialog = generateNewNoteForm();
+  var editNoteDialog = generateEditNoteForm();
+  var newProjectDialog = generateNewProjectForm();
   generateBaseInterface();
-  content.appendChild(newNoteDialog);
-  content.appendChild(editNoteDialog);
+  appendChildren(content, [newNoteDialog, editNoteDialog, newProjectDialog]);
+  gnProjectsElements(projects);
 }
 
 function generateBaseInterface () {
-  let container = document.querySelector(".content");
-  let interfaceContainer = gnInterfaceContainer();
-  let pageTitle = gnPageTitle();
-  let newItemButton = gnNewItemButton();
-  let notesContainer = gnNotesContainer();
-  appendChildren(interfaceContainer, [pageTitle, newItemButton]);
-  appendChildren(container, [interfaceContainer, notesContainer]);
+  var container = document.querySelector(".content");
+  var interfaceContainer = gnInterfaceContainer();
+  var pageTitle = gnPageTitle();
+  var newItemButton = gnNewItemButton();
+  var newProjectButton = gnNewProjectButton();
+  var projectsContainer = gnProjectsContainer();
+  var notesContainer = gnNotesContainer();
+  appendChildren(interfaceContainer, [pageTitle, newItemButton, newProjectButton]);
+  appendChildren(container, [interfaceContainer, projectsContainer, notesContainer]);
 }
 
 function gnInterfaceContainer() {
-  let interfaceContainer = createElementClass("div", "interface-container", "");
+  var interfaceContainer = createElementClass("div", "interface-container", "");
   return interfaceContainer;
 }
 
 function gnPageTitle() {
-  let pageTitle = createElementClass("h1", "page-title", "Odin to-do-list tool");
+  var pageTitle = createElementClass("h1", "page-title", "Odin to-do-list tool");
   return pageTitle;
 }
 
 function gnNewItemButton() {
-  let newItemButton = createElementClass("button", "new-item", "New Item");
+  var newItemButton = createElementClass("button", "new-item", "New Item");
   return newItemButton;
 }
 
+function gnNewProjectButton() {
+  var newItemButton = createElementClass("button", "new-project", "New Project");
+  return newItemButton;
+}
+
+function gnProjectsContainer() {
+  var projectsContainer = createElementClass("div", "projects-container", "");
+  return projectsContainer;
+}
+
 function gnNotesContainer() {
-  let notesContainer = createElementClass("div", "notes-container", "");
+  var notesContainer = createElementClass("div", "notes-container", "");
   return notesContainer;
+}
+
+function gnProjectsElements(projects) {
+  var projectsContainer = document.querySelector(".projects-container");
+  while (projectsContainer.firstChild) {
+    projectsContainer.removeChild(projectsContainer.firstChild);
+  };
+  projects.forEach(project => projectsContainer.appendChild(gnProjectElement(project)));
+}
+
+function gnProjectElement(project) {
+  var projectContainer = createElementClass("div", "project-container", "");
+  var projectTitle = createElementClass("span", "project-title", project);
+  var deleteProjectButton = createElementClass("button", "delete-project-button", "Delete project")
+  appendChildren(projectContainer, [projectTitle, deleteProjectButton]);
+  return projectContainer
 }
 
 export default generateBaseElements;
