@@ -1,6 +1,7 @@
-import {setAttributes, appendChildren, createElementClass} from './utils'
+import {appendChildren, createElementClass, storeItem, accessStoredItem} from './utils'
 
-let noteCount = 0;
+
+let noteCount = accessStoredItem("noteCount", "number") ? accessStoredItem("noteCount", "number") : 0;
 
 //Class generator
 const Note = class Note {
@@ -21,6 +22,7 @@ const Note = class Note {
 //Create a new note object based on values given in the new note form
 const generateNote = function () {
   noteCount +=1;
+  storeItem(noteCount, "noteCount", "number");
   return new Note(document.querySelector("#title-new").value,
                   document.querySelector("#date-new").value,
                   document.querySelector("#status-new").value,
@@ -33,6 +35,7 @@ const generateNote = function () {
 //Displays all the notes objects in the DOM, in project containers
 const displayNotes = function (notes) {
   removeDisplayedNotes();
+  storeItem(notes, "notes", "array");
   var notesContainer = document.querySelector(".notes-container");
   var uniqueProjects = [];
   notes.forEach((note) => {uniqueProjects.includes(note["project"]) ? '' : uniqueProjects.push(note["project"])});

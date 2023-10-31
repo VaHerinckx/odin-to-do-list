@@ -28,9 +28,35 @@ const removeAllChildren = function (container) {
   };
 }
 
+const storeItem = function (item, storedItemName, type) {
+  if (type === "array") {
+  var serializedArray = JSON.stringify(item);
+  localStorage.setItem(storedItemName, serializedArray);
+  }
+  if (type === "number") {
+  let valueAsString = item.toString();
+  localStorage.setItem(storedItemName, valueAsString);
+  }
+}
+
+const accessStoredItem = function (storedItemName, type) {
+  if (type === "array") {
+    var storedArray = localStorage.getItem(storedItemName);
+    var deserializedObject = JSON.parse(storedArray);
+    return deserializedObject;
+  }
+  if (type === "number") {
+    let storedValueAsString = localStorage.getItem(storedItemName);
+    let retrievedValue = parseInt(storedValueAsString);
+    return retrievedValue;
+  }
+}
+
 export {
   setAttributes,
   appendChildren,
   createElementClass,
-  removeAllChildren
+  removeAllChildren,
+  storeItem,
+  accessStoredItem
 };

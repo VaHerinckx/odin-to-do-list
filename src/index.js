@@ -4,15 +4,15 @@ import {Note, generateNote, displayNotes, removeElementById, editElementById, ad
 // import {handleCreateNoteOperation, handleEditNoteOperation, handleDeleteNoteOperation, handleCreateProjectOperation, handleDeleteProjectOperation} from './dom';
 import { adaptEditFormValues, resetNewFormValues } from './form';
 import { generateProject, displayProjects, Project } from './project';
+import { accessStoredItem } from './utils';
 
 
-
-let notes = [];
-let projects = [new Project("General", "id-1"), new Project("Study", "id-2"), new Project("Chores", "id-3")];
+let notes = accessStoredItem("notes", "array") ? accessStoredItem("notes", "array") : [];
+let projects = accessStoredItem("projects", "array") ? accessStoredItem("projects", "array") : [new Project("General", "id-1"), new Project("Study", "id-2"), new Project("Chores", "id-3")];
 let id = "";
-let content = document.querySelector(".content")
 generateBaseElements(projects);
-displayProjects(projects); //Generate all the base elements for the DOM
+displayNotes(notes)
+//displayProjects(projects); //Generate all the base elements for the DOM
 
 
 //Projects logic
@@ -61,6 +61,20 @@ document.addEventListener("click", (event) => {
     handleEditNoteOperation(event);
   }
 });
+
+// Serialize the array to a JSON string
+var serializedArray = JSON.stringify(projects);
+
+// Store the serialized array in local storage
+localStorage.setItem("myArray", serializedArray);
+// Retrieve the serialized array from local storage
+var storedArray = localStorage.getItem("myArray");
+
+// Deserialize the JSON string back to an array of objects
+var deserializedArray = JSON.parse(storedArray);
+
+// Now, deserializedArray contains your original array of objects
+displayProjects(deserializedArray)
 
 
 //Notes DOM functions

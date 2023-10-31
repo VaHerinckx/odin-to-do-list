@@ -1,6 +1,6 @@
-import {setAttributes, appendChildren, createElementClass} from './utils'
+import {appendChildren, createElementClass, storeItem, accessStoredItem} from './utils'
 
-let projectCount = 3;
+let projectCount = accessStoredItem("projectCount", "number") ? accessStoredItem("projectCount", "number") : 3;
 
 const Project = class Project {
   constructor(title, id) {
@@ -10,6 +10,7 @@ const Project = class Project {
 
 const generateProject = function () {
   projectCount += 1
+  storeItem(projectCount, "projectCount", "number");
   return new Project(document.querySelector("#new-project").value,
                      `id-${projectCount}`);
 }
@@ -22,6 +23,7 @@ const generateProjectsList = function (projects) {
 
 const displayProjects = function (projects) {
   removeDisplayedProjects();
+  storeItem(projects, "projects", "array");
   var projectsContainer = document.querySelector(".projects-container");
   projects.forEach(project => {projectsContainer.appendChild(createProjectSection(project))});
 };
