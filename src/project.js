@@ -1,13 +1,15 @@
 import {setAttributes, appendChildren, createElementClass} from './utils'
 
+let projectCount = 3;
+
 const Project = class Project {
   constructor(title, id) {
     Object.assign(this, {title, id});
   };
 }
 
-const generateProject = function (projectCount) {
-  console.log("project count in generateProject function: " + projectCount)
+const generateProject = function () {
+  projectCount += 1
   return new Project(document.querySelector("#new-project").value,
                      `id-${projectCount}`);
 }
@@ -21,8 +23,6 @@ const generateProjectsList = function (projects) {
 const displayProjects = function (projects) {
   removeDisplayedProjects();
   var projectsContainer = document.querySelector(".projects-container");
-  console.log("here is the list of projects to be displayed in function displayProjects")
-  projects.forEach(project => {console.log(project)})
   projects.forEach(project => {projectsContainer.appendChild(createProjectSection(project))});
 };
 

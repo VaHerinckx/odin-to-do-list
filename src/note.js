@@ -1,5 +1,6 @@
 import {setAttributes, appendChildren, createElementClass} from './utils'
 
+let noteCount = 0;
 
 //Class generator
 const Note = class Note {
@@ -18,7 +19,8 @@ const Note = class Note {
 }
 
 //Create a new note object based on values given in the new note form
-const generateNote = function (noteCount) {
+const generateNote = function () {
+  noteCount +=1;
   return new Note(document.querySelector("#title-new").value,
                   document.querySelector("#date-new").value,
                   document.querySelector("#status-new").value,
@@ -34,7 +36,6 @@ const displayNotes = function (notes) {
   var notesContainer = document.querySelector(".notes-container");
   var uniqueProjects = [];
   notes.forEach((note) => {uniqueProjects.includes(note["project"]) ? '' : uniqueProjects.push(note["project"])});
-  console.log(uniqueProjects)
   var sortedNotes = [];
   uniqueProjects.forEach(function (project) {
     var projectContainer = createElementClass("div", "project-container", "");
@@ -103,9 +104,29 @@ const editElementById = function (id, notes) {
   return newNotes;
 }
 
+const adaptNotesDeletedProjects = function (projects, notes) {
+  var projectList = [];
+  projects.forEach(project => projectList.push(project.title));
+  console.log(projectList)
+  var newNotes = [];
+  notes.forEach(function (note) {
+    if (projectList.includes(note.project)) {
+      newNotes.push(note);
+      console.log(note)
+    }
+    else {
+      note.project = "";
+      console.log(note)
+      newNotes.push(note);
+    }
+  });
+  displayNotes(newNotes);
+}
+
 
 export {Note,
         generateNote,
         displayNotes,
+        adaptNotesDeletedProjects,
         removeElementById,
         editElementById};
