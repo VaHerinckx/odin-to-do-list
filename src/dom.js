@@ -1,25 +1,25 @@
 import {Note, generateNote, displayNotes, removeElementById, editElementById, } from './note';
-import { adaptEditFormValues } from './form';
+import { adaptEditFormValues, resetNewFormValues } from './form';
+import { generateProject, displayProjects } from './project';
 
-const handleCreateOperation = function (noteCount, notes) {
-  document.querySelector(".newNoteDialog").addEventListener("click", (event) => {
+const handleCreateOperation = function (noteCount, notes, projects) {
+  var newNotedialog = document.querySelector(".newNoteDialog")
+  resetNewFormValues(projects);
+  newNotedialog.showModal();
+  document.addEventListener("click", (event) => {
     if (event.target.classList.contains("close-new-note-dialog")) {
       event.preventDefault()
       var newNotedialog = document.querySelector(".newNoteDialog")
       var note = generateNote(noteCount);
-      var newNotes = notes;
       newNotedialog.close();
-      newNotes.push(note);
-      displayNotes(newNotes);
-      return newNotes;
-    };
-  });
+      notes.push(note);
+      displayNotes(notes);
+    }
+  })
 };
 
 const handleEditOperation = function (id, notes, projects) {
-  console.log("about to adapt the values in the form")
   adaptEditFormValues(id, notes, projects)
-  console.log("values adapted")
   document.addEventListener("click", (event) => {
   if (event.target.classList.contains("close-edit-note-dialog")) {
     event.preventDefault()
@@ -32,4 +32,19 @@ const handleEditOperation = function (id, notes, projects) {
 }
 
 
-export {handleCreateOperation, handleEditOperation}
+const handleCreateProjectOperation = function (projects, projectCount) {
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("close-new-project-dialog")) {
+      event.preventDefault()
+      var newProjectdialog = document.querySelector(".newProjectDialog")
+      var project = generateProject(projectCount);
+      newProjectdialog.close();
+      projects.push(project);
+      displayProjects(projects);
+    }
+  })
+};
+
+
+
+export {handleCreateOperation, handleEditOperation, handleCreateProjectOperation}

@@ -180,6 +180,7 @@ const resetNewFormValues = function (projects) {
   document.querySelector("#priority-new").value = "";
   document.querySelector("#description-new").value = "";
   adaptProjectOptions("#project-new", projects)
+  document.querySelector("#project-new").value = "";
 }
 
 function adaptProjectOptions (projectContainerID, projects) {
