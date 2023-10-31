@@ -1,6 +1,6 @@
 import './styles.css';
 import generateBaseElements from './interface';
-import {Note, generateNote, displayNotes, removeElementById, editElementById, adaptNotesDeletedProjects} from './note';
+import {Note, generateNote, displayNotes, removeElementById, editElementById, adaptNotesDeletedProjects, displayFullNote, displaySmallNote} from './note';
 // import {handleCreateNoteOperation, handleEditNoteOperation, handleDeleteNoteOperation, handleCreateProjectOperation, handleDeleteProjectOperation} from './dom';
 import { adaptEditFormValues, resetNewFormValues } from './form';
 import { generateProject, displayProjects, Project } from './project';
@@ -12,7 +12,7 @@ let projects = accessStoredItem("projects", "array") ? accessStoredItem("project
 let id = "";
 generateBaseElements(projects);
 displayNotes(notes)
-//displayProjects(projects); //Generate all the base elements for the DOM
+displayProjects(projects); //Generate all the base elements for the DOM
 
 
 //Projects logic
@@ -62,19 +62,24 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// Serialize the array to a JSON string
-var serializedArray = JSON.stringify(projects);
+//Show less/more note elements logic
+document.addEventListener("click", (event) => {
+  //Show full note
+  if (event.target.classList.contains(".show-more-button")) {
+    console.log("Clicked on show more button");
+    id = event.target.parentNode.dataset.id;
+    console.log(id);
+    displayFullNote(id, notes);
+  }
+  //Show small note
+  if (event.target.classList.contains("show-less-button")) {
+    console.log("show less note was clicked")
+    id = event.target.parentNode.dataset.id;
+    console.log(id)
+    displaySmallNote(id, notes);
+  };
+});
 
-// Store the serialized array in local storage
-localStorage.setItem("myArray", serializedArray);
-// Retrieve the serialized array from local storage
-var storedArray = localStorage.getItem("myArray");
-
-// Deserialize the JSON string back to an array of objects
-var deserializedArray = JSON.parse(storedArray);
-
-// Now, deserializedArray contains your original array of objects
-displayProjects(deserializedArray)
 
 
 //Notes DOM functions

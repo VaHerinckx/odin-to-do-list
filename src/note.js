@@ -1,4 +1,4 @@
-import {appendChildren, createElementClass, storeItem, accessStoredItem} from './utils'
+import {appendChildren, createElementClass, storeItem, accessStoredItem, removeAllChildren} from './utils'
 
 
 let noteCount = accessStoredItem("noteCount", "number") ? accessStoredItem("noteCount", "number") : 0;
@@ -39,7 +39,6 @@ const displayNotes = function (notes) {
   var notesContainer = document.querySelector(".notes-container");
   var uniqueProjects = [];
   notes.forEach((note) => {uniqueProjects.includes(note["project"]) ? '' : uniqueProjects.push(note["project"])});
-  var sortedNotes = [];
   uniqueProjects.forEach(function (project) {
     var projectContainer = createElementClass("div", "project-container", "");
     projectContainer.setAttribute("id", `project-${project}`);
@@ -52,7 +51,6 @@ const displayNotes = function (notes) {
   })
 };
 
-
 //Individually create the container with all the DOM elements for a note object
 function createNoteContainer (note) {
   let noteContainer = createElementClass("div", "note-container", "")
@@ -60,12 +58,37 @@ function createNoteContainer (note) {
   appendChildren(noteContainer, [createElementClass("span", `project-value`, note["project"]),
                                  createNoteSection("title", note["title"]),
                                  createNoteSection("date", note["date"]),
+                                 createNoteButtons(),
+                                 createElementClass("button", "show-more-button", "Details")]);
+  return noteContainer;
+}
+
+const displayFullNote = function (id, notes) {
+  const noteContainer = document.querySelector(`div[data-id="${id}"]`);
+  removeAllChildren(noteContainer);
+  const note = selectElementById(id, notes)
+  appendChildren(noteContainer, [createElementClass("button", "show-less-button", "X"),
+                                 createElementClass("span", `project-value`, note["project"]),
+                                 createNoteSection("title", note["title"]),
+                                 createNoteSection("date", note["date"]),
                                  createNoteSection("status", note["status"]),
                                  createNoteSection("prio", note["prio"]),
                                  createNoteSection("notes", note["notes"]),
                                  createNoteButtons()]);
-  return noteContainer;
 }
+
+
+const displaySmallNote = function (id, notes) {
+  const noteContainer = document.querySelector(`div[data-id="${id}"]`);
+  removeAllChildren(noteContainer);
+  const note = selectElementById(id, notes)
+  appendChildren(noteContainer, [createElementClass("span", `project-value`, note["project"]),
+                                 createNoteSection("title", note["title"]),
+                                 createNoteSection("date", note["date"]),
+                                 createNoteButtons()],
+                                 createElementClass("button", "show-more-button", "Details"));
+};
+
 
 
 //Creates one text section of the DOM of the note
@@ -107,6 +130,16 @@ const editElementById = function (id, notes) {
   return newNotes;
 }
 
+const selectElementById = function (id, notes) {
+  let newNote = "";
+  notes.forEach(function (note) {
+    if (note["id"] === id) {
+      newNote = note;
+    }
+  });
+  return newNote
+};
+
 const adaptNotesDeletedProjects = function (projects, notes) {
   var projectList = [];
   projects.forEach(project => projectList.push(project.title));
@@ -132,4 +165,6 @@ export {Note,
         displayNotes,
         adaptNotesDeletedProjects,
         removeElementById,
-        editElementById};
+        editElementById,
+        displayFullNote,
+        displaySmallNote};
