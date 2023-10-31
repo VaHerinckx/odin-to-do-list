@@ -28,15 +28,29 @@ const generateNote = function (noteCount) {
                   `id-${noteCount}`);
 }
 
-//Displays all the notes objects in the DOM
+//Displays all the notes objects in the DOM, in project containers
 const displayNotes = function (notes) {
   removeDisplayedNotes();
   var notesContainer = document.querySelector(".notes-container");
-  notes.forEach(note => {notesContainer.appendChild(displayNote(note))});
+  var uniqueProjects = [];
+  notes.forEach((note) => {uniqueProjects.includes(note["project"]) ? '' : uniqueProjects.push(note["project"])});
+  console.log(uniqueProjects)
+  var sortedNotes = [];
+  uniqueProjects.forEach(function (project) {
+    var projectContainer = createElementClass("div", "project-container", "");
+    projectContainer.setAttribute("id", `project-${project}`);
+    notes.forEach(function (note) {
+      if (note["project"] === project) {
+        projectContainer.appendChild(createNoteContainer(note))
+      }
+    })
+    notesContainer.appendChild(projectContainer)
+  })
 };
 
+
 //Individually create the container with all the DOM elements for a note object
-function displayNote (note) {
+function createNoteContainer (note) {
   let noteContainer = createElementClass("div", "note-container", "")
   noteContainer.setAttribute("data-id", note["id"]);
   appendChildren(noteContainer, [createElementClass("span", `project-value`, note["project"]),
@@ -48,6 +62,7 @@ function displayNote (note) {
                                  createNoteButtons()]);
   return noteContainer;
 }
+
 
 //Creates one text section of the DOM of the note
 function createNoteSection (sectionName, text) {
