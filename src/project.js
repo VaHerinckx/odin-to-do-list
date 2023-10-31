@@ -7,6 +7,7 @@ const Project = class Project {
 }
 
 const generateProject = function (projectCount) {
+  console.log("project count in generateProject function: " + projectCount)
   return new Project(document.querySelector("#new-project").value,
                      `id-${projectCount}`);
 }
@@ -17,9 +18,11 @@ const generateProjectsList = function (projects) {
   return projectList;
 }
 
-const displayProjects= function (projects) {
+const displayProjects = function (projects) {
   removeDisplayedProjects();
   var projectsContainer = document.querySelector(".projects-container");
+  console.log("here is the list of projects to be displayed in function displayProjects")
+  projects.forEach(project => {console.log(project)})
   projects.forEach(project => {projectsContainer.appendChild(createProjectSection(project))});
 };
 
