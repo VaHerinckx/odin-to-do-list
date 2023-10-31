@@ -65,17 +65,13 @@ document.addEventListener("click", (event) => {
 //Show less/more note elements logic
 document.addEventListener("click", (event) => {
   //Show full note
-  if (event.target.classList.contains(".show-more-button")) {
-    console.log("Clicked on show more button");
+  if (event.target.classList.contains("show-more-button")) {
     id = event.target.parentNode.dataset.id;
-    console.log(id);
     displayFullNote(id, notes);
   }
   //Show small note
   if (event.target.classList.contains("show-less-button")) {
-    console.log("show less note was clicked")
     id = event.target.parentNode.dataset.id;
-    console.log(id)
     displaySmallNote(id, notes);
   };
 });
@@ -98,7 +94,6 @@ function handleEditNoteOperation (event) {
   editNoteDialog.close();
   displayNotes(notes);
 };
-
 function handleDeleteNoteOperation (event) {
   var id = event.target.parentNode.parentNode.dataset.id;
   notes = removeElementById(id, notes);
@@ -114,7 +109,6 @@ function handleCreateProjectOperation (event) {
   projects.push(project);
   displayProjects(projects);
 };
-
 function  handleDeleteProjectOperation (event) {
   var id = event.target.parentNode.dataset.id;
   projects = removeElementById(id, projects);

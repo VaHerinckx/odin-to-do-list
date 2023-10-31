@@ -8,15 +8,17 @@ const Note = class Note {
   constructor(title, date, status, prio, project, notes, id) {
     Object.assign(this, {title, date, status, prio, project, notes, id});
   };
-  updateNote = function() {
-    this["title"] = document.querySelector("#title-edit").value;
-    this["date"] = document.querySelector("#date-edit").value;
-    this["status"] = document.querySelector("#status-edit").value;
-    this["prio"] = document.querySelector("#priority-edit").value;
-    this["notes"] = document.querySelector("#description-edit").value;
-    this["project"] = document.querySelector("#project-edit").value;
-    return this;
-  };
+}
+
+function updateNote(note) {
+  note["title"] = document.querySelector("#title-edit").value;
+  note["date"] = document.querySelector("#date-edit").value;
+  note["status"] = document.querySelector("#status-edit").value;
+  note["prio"] = document.querySelector("#priority-edit").value;
+  note["notes"] = document.querySelector("#description-edit").value;
+  note["project"] = document.querySelector("#project-edit").value;
+  return note;
+
 }
 
 //Create a new note object based on values given in the new note form
@@ -85,8 +87,8 @@ const displaySmallNote = function (id, notes) {
   appendChildren(noteContainer, [createElementClass("span", `project-value`, note["project"]),
                                  createNoteSection("title", note["title"]),
                                  createNoteSection("date", note["date"]),
-                                 createNoteButtons()],
-                                 createElementClass("button", "show-more-button", "Details"));
+                                 createNoteButtons(),
+                                 createElementClass("button", "show-more-button", "Details")]);
 };
 
 
@@ -126,7 +128,7 @@ const removeElementById = function (id, notes) {
 //Updates the values of the edited note object and returns the updated array
 const editElementById = function (id, notes) {
   var newNotes = [];
-  notes.forEach(note => {note["id"] === id ? newNotes.push(note.updateNote()) : newNotes.push(note)});
+  notes.forEach(note => {note["id"] === id ? newNotes.push(updateNote(note)) : newNotes.push(note)});
   return newNotes;
 }
 
