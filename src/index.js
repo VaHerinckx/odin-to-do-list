@@ -2,7 +2,7 @@ import './styles.css';
 import generateBaseElements from './interface';
 import {Note, generateNote, displayNotes, removeElementById, editElementById, adaptNotesDeletedProjects, displayFullNote, displaySmallNote} from './note';
 // import {handleCreateNoteOperation, handleEditNoteOperation, handleDeleteNoteOperation, handleCreateProjectOperation, handleDeleteProjectOperation} from './dom';
-import { adaptEditFormValues, resetNewFormValues } from './form';
+import { adaptEditFormValues, resetNewNoteFormValues, resetNewProjectFormValues } from './form';
 import { generateProject, displayProjects, Project } from './project';
 import { accessStoredItem } from './utils';
 
@@ -20,6 +20,7 @@ document.addEventListener("click", (event) => {
   //New project code
   if (event.target.classList.contains("new-project")) {
     var newProjectdialog = document.querySelector(".newProjectDialog")
+    resetNewProjectFormValues();
     newProjectdialog.showModal();
   }
   if (event.target.classList.contains("close-new-project-dialog")) {
@@ -37,7 +38,7 @@ document.addEventListener("click", (event) => {
   //New note project
   if (event.target.classList.contains("new-item")) {
     var newNotedialog = document.querySelector(".newNoteDialog")
-    resetNewFormValues(projects);
+    resetNewNoteFormValues(projects);
     newNotedialog.showModal();
   };
   if (event.target.classList.contains("close-new-note-dialog")) {
@@ -110,7 +111,7 @@ function handleCreateProjectOperation (event) {
   displayProjects(projects);
 };
 function  handleDeleteProjectOperation (event) {
-  var id = event.target.parentNode.dataset.id;
+  var id = event.target.parentNode.parentNode.dataset.id;
   projects = removeElementById(id, projects);
   displayProjects(projects);
   adaptNotesDeletedProjects(projects, notes);

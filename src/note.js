@@ -42,7 +42,7 @@ const displayNotes = function (notes) {
   var uniqueProjects = [];
   notes.forEach((note) => {uniqueProjects.includes(note["project"]) ? '' : uniqueProjects.push(note["project"])});
   uniqueProjects.forEach(function (project) {
-    var projectContainer = createElementClass("div", "project-container", "");
+    var projectContainer = createElementClass("div", "project-group-container", "");
     projectContainer.setAttribute("id", `project-${project}`);
     notes.forEach(function (note) {
       if (note["project"] === project) {
@@ -75,7 +75,7 @@ const displayFullNote = function (id, notes) {
                                  createNoteSection("date", note["date"]),
                                  createNoteSection("status", note["status"]),
                                  createNoteSection("prio", note["prio"]),
-                                 createNoteSection("notes", note["notes"]),
+                                 createNoteSection("description", note["notes"]),
                                  createNoteButtons()]);
 }
 

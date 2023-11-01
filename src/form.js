@@ -38,7 +38,6 @@ const generateEditNoteForm = function(projects) {
 const generateNewProjectForm = function() {
   var dialog = createElementClass("dialog", "newProjectDialog", "");
   var formContainer = createElementClass("form", "form-container", "");
-  var formObjective = "new-project"
   formContainer.setAttribute("action", "");
   formContainer.appendChild(generateNewProjectContainer());
   dialog.appendChild(formContainer);
@@ -107,7 +106,7 @@ function generateStatusContainer (formObjective) {
 }
 
 function generateProjectContainer (formObjective, projects) {
-  let projectContainer = createElementClass("div", "project-container", "");
+  let projectContainer = createElementClass("div", "project-form-container", "");
   let projectLabel = createElementClass("label", "project", "Project: ");
   setAttributes(projectLabel, {"for" : "project"});
   var projectList = [];
@@ -125,12 +124,12 @@ function generateCloseButton (formObjective) {
 }
 
 function generateNewProjectContainer () {
-  let newProjectContainer = createElementClass("div", "new-project-container", "");
-  let newProjectLabel = createElementClass("label", "new-project", "New Project: ");
-  setAttributes(newProjectLabel, {"for" : "new-project"});
-  let newProjectInput = createElementClass("input", "new-project", "");
-  setAttributes(newProjectInput, {"id" : "new-project",
-                             "name" : "new-project",
+  let newProjectContainer = createElementClass("div", "new-project-form-container", "");
+  let newProjectLabel = createElementClass("label", "new-project-form", "New Project: ");
+  setAttributes(newProjectLabel, {"for" : "new-project-form"});
+  let newProjectInput = createElementClass("input", "new-project-form", "");
+  setAttributes(newProjectInput, {"id" : "new-project-form",
+                             "name" : "new-project-form",
                              "type" : "text",
                              "placeholder" : "Sport"});
   var button = createElementClass("button", `close-new-project-dialog`, `add new project`)
@@ -173,7 +172,7 @@ const adaptEditFormValues = function (id, notes, projects) {
 
 // Reset the values when new note form is generated
 
-const resetNewFormValues = function (projects) {
+const resetNewNoteFormValues = function (projects) {
   document.querySelector("#title-new").value = "";
   document.querySelector("#date-new").value = "";
   document.querySelector("#status-new").value = "";
@@ -181,6 +180,10 @@ const resetNewFormValues = function (projects) {
   document.querySelector("#description-new").value = "";
   adaptProjectOptions("#project-new", projects)
   document.querySelector("#project-new").value = "";
+}
+
+const resetNewProjectFormValues = function () {
+  document.querySelector("#new-project-form").value = "";
 }
 
 function adaptProjectOptions (projectContainerID, projects) {
@@ -191,4 +194,4 @@ function adaptProjectOptions (projectContainerID, projects) {
   projectList.forEach((project) => projectOptionsContainer.appendChild(createOptionElement(project)));
 }
 
-export {generateNewNoteForm, generateEditNoteForm, generateNewProjectForm, adaptEditFormValues, resetNewFormValues};
+export {generateNewNoteForm, generateEditNoteForm, generateNewProjectForm, adaptEditFormValues, resetNewNoteFormValues, resetNewProjectFormValues};

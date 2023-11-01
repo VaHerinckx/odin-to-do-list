@@ -11,7 +11,7 @@ const Project = class Project {
 const generateProject = function () {
   projectCount += 1
   storeItem(projectCount, "projectCount", "number");
-  return new Project(document.querySelector("#new-project").value,
+  return new Project(document.querySelector("#new-project-form").value,
                      `id-${projectCount}`);
 }
 
@@ -32,8 +32,9 @@ function createProjectSection(project) {
   var projectContainer = createElementClass("div", "project-container", "");
   projectContainer.setAttribute("data-id", project["id"]);
   var projectTitle = createElementClass("span", "project-title", project.title);
-  var deleteProjectButton = createElementClass("button", "delete-project-button", "Delete project")
-  appendChildren(projectContainer, [projectTitle, deleteProjectButton]);
+  var deleteProjectButton = createElementClass("button", "delete-project-button", "X")
+  projectTitle.appendChild(deleteProjectButton)
+  projectContainer.append(projectTitle);
   return projectContainer
 }
 

@@ -13,14 +13,16 @@ const generateBaseElements = function (projects) {
 
 function generateBaseInterface () {
   var container = document.querySelector(".content");
-  var interfaceContainer = gnInterfaceContainer();
+  var headerContainer = createElementClass("div", "header", "");
+  var sideBarContainer = createElementClass("div", "side-bar", "");
   var pageTitle = gnPageTitle();
   var newItemButton = gnNewItemButton();
   var newProjectButton = gnNewProjectButton();
   var projectsContainer = gnProjectsContainer();
   var notesContainer = gnNotesContainer();
-  appendChildren(interfaceContainer, [pageTitle, newItemButton, newProjectButton]);
-  appendChildren(container, [interfaceContainer, projectsContainer, notesContainer]);
+  appendChildren(headerContainer, [pageTitle, newItemButton])
+  appendChildren(sideBarContainer, [newProjectButton, projectsContainer])
+  appendChildren(container, [headerContainer, sideBarContainer, notesContainer]);
 }
 
 function gnInterfaceContainer() {
