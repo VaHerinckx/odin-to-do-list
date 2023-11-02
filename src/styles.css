@@ -45,7 +45,7 @@ input, select, textarea {
 
 /* GROUP FORMATTING */
 
-.delete-project-button, .edit-button, .delete-button, .show-more-button, .show-less-button, .close-new-note-dialog, .close-new-project-dialog {
+.delete-project-button, .edit-button, .delete-button, .show-more-button, .show-less-button, .close-new-note-dialog, .close-new-project-dialog, .close-edit-note-dialog {
   display: inline-block;
   outline: 0;
   cursor: pointer;
@@ -77,6 +77,16 @@ input, select, textarea {
   color: var(--white);
   grid-column: 1;
   grid-row: 1 / 3;
+}
+
+.page-title {
+  text-align: center;
+  color: var(--white);
+  margin: 0;
+  margin-bottom: 5px;
+  margin-top: 20px;
+  /* grid-column: 2/3;
+  grid-row: 1; */
 }
 
 .new-project {
@@ -131,28 +141,14 @@ input, select, textarea {
 
 /* HEADER FORMATTING */
 
-.header {
-  grid-column: 2/3;
-  grid-row: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid black;
-}
-
-.page-title {
-  text-align: center;
-  color: var(--onyx);
-  margin: 0;
-  margin-bottom: 5px;
-  /* grid-column: 2/3;
-  grid-row: 1; */
-}
-
 .new-item {
   /* margin-top: 30px;
   margin-bottom: 30px; */
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 30%;
   background-color: var(--onyx);
   align-self: center;
   color: var(--white);
@@ -251,6 +247,13 @@ dialog div option {
 
 
 /* Dialog formatting */
+.new-project-form-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
 .form-container {
   display: flex;
   flex-direction: column;

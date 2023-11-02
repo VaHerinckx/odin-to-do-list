@@ -13,16 +13,16 @@ const generateBaseElements = function (projects) {
 
 function generateBaseInterface () {
   var container = document.querySelector(".content");
-  var headerContainer = createElementClass("div", "header", "");
+  // var headerContainer = createElementClass("div", "header", "");
   var sideBarContainer = createElementClass("div", "side-bar", "");
   var pageTitle = gnPageTitle();
   var newItemButton = gnNewItemButton();
   var newProjectButton = gnNewProjectButton();
   var projectsContainer = gnProjectsContainer();
   var notesContainer = gnNotesContainer();
-  appendChildren(headerContainer, [pageTitle, newItemButton])
-  appendChildren(sideBarContainer, [newProjectButton, projectsContainer])
-  appendChildren(container, [headerContainer, sideBarContainer, notesContainer]);
+  // appendChildren(headerContainer, [pageTitle, newItemButton])
+  appendChildren(sideBarContainer, [pageTitle, newProjectButton, projectsContainer])
+  appendChildren(container, [sideBarContainer, newItemButton, notesContainer]);
 }
 
 function gnInterfaceContainer() {
@@ -31,7 +31,7 @@ function gnInterfaceContainer() {
 }
 
 function gnPageTitle() {
-  var pageTitle = createElementClass("h1", "page-title", "Odin to-do-list tool");
+  var pageTitle = createElementClass("h1", "page-title", "What to-do?");
   return pageTitle;
 }
 
